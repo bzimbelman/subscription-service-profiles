@@ -13,8 +13,10 @@ A profile is a fully declarative description of how subscription-service should 
 The repo holds:
 
 - `schemas/profile-manifest-v1.json` — the JSON Schema every manifest is validated against. This is a mirror of the canonical schema that ships inside subscription-service's `profile-loader` plugin.
+- Five seeded vendor profiles: `epic/`, `meditech/`, `cerner/`, `athena/`, `nextgen/`.
 - `community-template/` — a working skeleton a contributor copies to start a new profile.
-- `docs/` — authoring guide, manifest reference, quirks catalog, audit-enrichments reference, testing-a-profile guide.
+- `docs/` — authoring guide, manifest reference, quirks catalog, audit-enrichments reference, testing-a-profile guide, profile-publishing.
+- `scripts/test-runner/` — end-to-end test harness (brings up the engine via docker compose, exercises each profile's tests).
 - `.github/workflows/ci.yml` — validates every manifest against the schema on every PR.
 - `.github/workflows/release.yml` — tags + bundles a profile version into a release tarball.
 
