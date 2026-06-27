@@ -1,0 +1,8 @@
+{
+  "resourceType": "Bundle",
+  "type": "message",
+  "entry": [
+    {"resource": {"resourceType": "MessageHeader", "id": "<placeholder-uuid>"}},
+    {"resource": {"resourceType": "Patient", "id": "<placeholder-uuid>"}}
+  ]
+}

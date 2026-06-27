@@ -1,0 +1,22 @@
+map "http://bzonfhir.com/fhir/StructureMap/hl7v2-ADT-A08-Meditech" = "hl7v2-ADT-A08-Meditech"
+
+uses "http://hl7.org/fhir/v2/StructureDefinition/ADT_A08" alias ADT_A08 as source
+uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias Bundle as target
+
+group ADT_A08toFHIR(source src : ADT_A08, target bundle : Bundle) {
+  src -> bundle.type = 'message' "set-bundle-type";
+  src.msh as msh -> bundle.entry as entry then MessageHeader(msh, entry) "messageheader";
+  src.pid as pid -> bundle.entry as entry then Patient(pid, entry) "patient";
+}
+
+group MessageHeader(source msh, target entry) {
+  msh -> entry.resource = create('MessageHeader') as mh then {
+    msh -> mh.id = uuid() "id";
+  } "build";
+}
+
+group Patient(source pid, target entry) {
+  pid -> entry.resource = create('Patient') as p then {
+    pid -> p.id = uuid() "id";
+  } "build";
+}
