@@ -1,0 +1,33 @@
+profile:
+  id: nextgen
+  version: "enterprise-2025.1.0"
+  schemaVersion: 1
+  vendor:
+    name: NextGen Healthcare
+    productLine: Enterprise
+    productVersion: "2025.x"
+  fhirVersions: [R4]
+  hl7Versions: [v2.5]
+
+ingest:
+  - id: mllp-default
+    type: hl7v2-mllp
+    config:
+      port: 2575
+      facilityResolver: standard
+
+mappings:
+  - messageType: ADT^A04
+    map: maps/hl7v2-ADT-A04-NextGen.fml
+    tests: [tests/adt-a04-basic/]
+
+quirks:
+  msh3-format: standard
+  empty-pid-strategy: reject
+  attachment-encoding: base64-standard
+
+audit:
+  agent-system: nextgen
+  enrichments:
+    - addOriginatingUser: pv1.7
+    - addPatientFacility: msh.4
