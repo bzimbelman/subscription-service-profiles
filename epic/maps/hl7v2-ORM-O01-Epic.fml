@@ -1,0 +1,30 @@
+map "http://bzonfhir.com/fhir/StructureMap/hl7v2-ORM-O01-Epic" = "hl7v2-ORM-O01-Epic"
+
+uses "http://hl7.org/fhir/v2/StructureDefinition/ORM_O01" alias ORM_O01 as source
+uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias Bundle as target
+
+group ORM_O01toFHIR(source src : ORM_O01, target bundle : Bundle) {
+  src -> bundle.type = 'message' "set-bundle-type";
+  src.msh as msh -> bundle.entry as entry then MessageHeader(msh, entry) "messageheader";
+  src.pid as pid -> bundle.entry as entry then Patient(pid, entry) "patient";
+  src.orc as orc -> bundle.entry as entry then ServiceRequest(orc, entry) "servicerequest";
+}
+
+group MessageHeader(source msh, target entry) {
+  msh -> entry.resource = create('MessageHeader') as mh then {
+    msh -> mh.id = uuid() "id";
+  } "build";
+}
+
+group Patient(source pid, target entry) {
+  pid -> entry.resource = create('Patient') as p then {
+    pid -> p.id = uuid() "id";
+  } "build";
+}
+
+group ServiceRequest(source orc, target entry) {
+  orc -> entry.resource = create('ServiceRequest') as sr then {
+    orc -> sr.id = uuid() "id";
+    orc.orc1 as v -> sr.intent = v "intent";
+  } "build";
+}

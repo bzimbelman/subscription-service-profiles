@@ -1,0 +1,26 @@
+map "http://bzonfhir.com/fhir/StructureMap/hl7v2-ADT-A04-Epic" = "hl7v2-ADT-A04-Epic"
+
+uses "http://hl7.org/fhir/v2/StructureDefinition/ADT_A04" alias ADT_A04 as source
+uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias Bundle as target
+
+group ADT_A04toFHIR(source src : ADT_A04, target bundle : Bundle) {
+  src -> bundle.type = 'message' "set-bundle-type";
+  src.msh as msh -> bundle.entry as entry then MessageHeader(msh, entry) "messageheader";
+  src.pid as pid -> bundle.entry as entry then Patient(pid, entry) "patient";
+}
+
+group MessageHeader(source msh, target entry) {
+  msh -> entry.resource = create('MessageHeader') as mh then {
+    msh -> mh.id = uuid() "id";
+  } "messageheader-build";
+}
+
+group Patient(source pid, target entry) {
+  pid -> entry.resource = create('Patient') as p then {
+    pid -> p.id = uuid() "id";
+    pid.pid3 as cx -> p.identifier as id then {
+      cx.cx1 as v -> id.value = v "value";
+      cx -> id.system = 'urn:bzonfhir:profile:epic:mrn' "system";
+    } "identifier";
+  } "patient-build";
+}
