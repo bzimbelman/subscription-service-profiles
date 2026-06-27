@@ -1,0 +1,13 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "<placeholder-uuid>",
+        "identifier": [{"system": "urn:bzonfhir:profile:athena:patientid", "value": "PATIENT-EXAMPLE-301"}]
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "OBS-EXAMPLE-401",
+        "status": "final",
+        "code": {
+          "coding": [{"system": "http://loinc.org", "code": "00000-0", "display": "Example observation"}]
+        }
+      }
+    }
+  ]
+}

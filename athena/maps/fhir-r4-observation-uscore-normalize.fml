@@ -1,0 +1,17 @@
+map "http://bzonfhir.com/fhir/StructureMap/fhir-r4-observation-uscore-normalize" = "fhir-r4-observation-uscore-normalize"
+
+uses "http://hl7.org/fhir/StructureDefinition/Observation" alias Observation as source
+uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias Bundle as target
+
+group ObservationToBundle(source src : Observation, target bundle : Bundle) {
+  src -> bundle.type = 'collection' "set-bundle-type";
+  src -> bundle.entry as entry then NormalizedObservation(src, entry) "obs";
+}
+
+group NormalizedObservation(source src, target entry) {
+  src -> entry.resource = create('Observation') as ob then {
+    src.id as v -> ob.id = v "id";
+    src.status as v -> ob.status = v "status";
+    src.code as v -> ob.code = v "code";
+  } "build";
+}

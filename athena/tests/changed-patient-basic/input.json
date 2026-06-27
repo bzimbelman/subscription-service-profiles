@@ -1,0 +1,8 @@
+{
+  "patientid": "PATIENT-EXAMPLE-301",
+  "practiceid": "PRACTICE-EXAMPLE-1",
+  "departmentid": "DEPT-EXAMPLE-1",
+  "firstname": "Test",
+  "lastname": "Patient Four",
+  "dob": "1900-01-01"
+}
