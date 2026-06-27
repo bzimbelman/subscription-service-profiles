@@ -1,0 +1,38 @@
+name: release
+on:
+  push:
+    tags:
+      - '*-v*'
+
+jobs:
+  bundle-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse vendor + version from tag
+        id: parse
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          VENDOR="${TAG%-v*}"
+          VERSION="${TAG#*-v}"
+          echo "vendor=$VENDOR" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+      - name: Verify the vendor directory exists
+        run: |
+          if [ ! -d "${{ steps.parse.outputs.vendor }}" ]; then
+            echo "Vendor directory '${{ steps.parse.outputs.vendor }}' does not exist."
+            exit 1
+          fi
+      - name: Bundle
+        run: |
+          tar czf "${{ steps.parse.outputs.tag }}.tgz" \
+            "${{ steps.parse.outputs.vendor }}/"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "${{ steps.parse.outputs.tag }}.tgz"
+          generate_release_notes: true
+      # TODO future: sign tarball with cosign before attaching the release asset.
