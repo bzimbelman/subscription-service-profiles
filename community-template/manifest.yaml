@@ -1,0 +1,63 @@
+# Vendor profile template — copy this directory to <your-vendor>/, rename, fill in.
+#
+# This file intentionally contains placeholders. It will not validate against
+# the JSON Schema as-is — replace every <...> placeholder before opening a PR.
+#
+# See docs/manifest-reference.md for the field-by-field reference and
+# docs/authoring-guide.md for the end-to-end walkthrough.
+
+profile:
+  # Lower-case-kebab identifier, unique across the catalog. Examples: epic, meditech, athena.
+  id: <your-vendor-id>
+
+  # SemVer for this profile bundle. Independent from the engine version.
+  version: "<your-version>"
+
+  # Manifest-schema version. Currently always 1.
+  schemaVersion: 1
+
+  vendor:
+    # Human-readable vendor name displayed in the operator UI.
+    name: <vendor-display-name>
+    # Product line within the vendor's portfolio (most vendors ship multiple products).
+    productLine: <product-line>
+    # The product version range this profile targets (e.g., "2024.x" or "v8.x").
+    productVersion: "<product-version>"
+
+  # FHIR versions the profile's mappings target. Almost always [R4].
+  fhirVersions: [R4]
+
+  # HL7 v2 versions the profile's mappings accept. Omit or empty if the
+  # vendor exposes only FHIR or only native REST APIs.
+  hl7Versions: [<hl7-version>]
+
+# One or more ingest entries. Each entry creates one IngestSource bean
+# in the engine. Use ingest types that are registered as built-in
+# plugins in the engine: hl7v2-mllp, fhir-r4-polling, athena-native-rest.
+ingest:
+  - id: <ingest-entry-id>
+    type: <ingest-plugin-type>
+    config:
+      # Type-specific config; see the corresponding ingest plugin's README
+      # in the engine repo for the supported keys.
+      <key>: <value>
+
+# Mapping rules. Either messageType (HL7 v2) or sourceType (non-v2) keys
+# each rule. The map path is relative to this manifest file.
+mappings:
+  - messageType: <e.g., ADT^A04>
+    map: maps/<your-map-file>.fml
+    tests: [tests/<test-dir>/]
+
+# Vendor-specific deviations from the standard. See docs/quirks-catalog.md
+# for the full list of supported quirk strategy ids. Unknown keys fail
+# validation.
+quirks:
+  <quirk-key>: <quirk-strategy-id>
+
+# AuditEvent enrichment rules. See docs/audit-enrichments.md.
+audit:
+  # Identifies the source vendor in audit reports.
+  agent-system: <your-vendor-id>
+  enrichments:
+    - <rule-name>: <source-field>
