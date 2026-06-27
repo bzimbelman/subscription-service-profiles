@@ -1,0 +1,36 @@
+profile:
+  id: cerner
+  version: "millennium-2025.1.0"
+  schemaVersion: 1
+  vendor:
+    name: Oracle Health (Cerner)
+    productLine: Millennium
+    productVersion: "2025.x"
+  fhirVersions: [R4]
+  hl7Versions: [v2.5, v2.5.1]
+
+ingest:
+  - id: mllp-default
+    type: hl7v2-mllp
+    config:
+      port: 2575
+      facilityResolver: standard
+
+mappings:
+  - messageType: ADT^A04
+    map: maps/hl7v2-ADT-A04-Cerner.fml
+    tests: [tests/adt-a04-basic/]
+  - messageType: ORU^R01
+    map: maps/hl7v2-ORU-R01-Cerner.fml
+    tests: [tests/oru-r01-basic/]
+
+quirks:
+  msh3-format: standard
+  empty-pid-strategy: reject
+  attachment-encoding: base64-standard
+
+audit:
+  agent-system: cerner
+  enrichments:
+    - addOriginatingUser: pv1.7
+    - addPatientFacility: msh.4
