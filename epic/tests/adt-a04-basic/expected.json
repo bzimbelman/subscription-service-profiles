@@ -1,0 +1,24 @@
+{
+  "resourceType": "Bundle",
+  "type": "message",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "MessageHeader",
+        "id": "<placeholder-uuid>"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "<placeholder-uuid>",
+        "identifier": [
+          {
+            "system": "urn:bzonfhir:profile:epic:mrn",
+            "value": "MRN-EXAMPLE-001"
+          }
+        ]
+      }
+    }
+  ]
+}
