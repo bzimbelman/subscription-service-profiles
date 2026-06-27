@@ -1,0 +1,30 @@
+map "http://bzonfhir.com/fhir/StructureMap/hl7v2-ORU-R01-Cerner" = "hl7v2-ORU-R01-Cerner"
+
+uses "http://hl7.org/fhir/v2/StructureDefinition/ORU_R01" alias ORU_R01 as source
+uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias Bundle as target
+
+group ORU_R01toFHIR(source src : ORU_R01, target bundle : Bundle) {
+  src -> bundle.type = 'message' "set-bundle-type";
+  src.msh as msh -> bundle.entry as entry then MessageHeader(msh, entry) "messageheader";
+  src.pid as pid -> bundle.entry as entry then Patient(pid, entry) "patient";
+  src.obx as obx -> bundle.entry as entry then Observation(obx, entry) "observation";
+}
+
+group MessageHeader(source msh, target entry) {
+  msh -> entry.resource = create('MessageHeader') as mh then {
+    msh -> mh.id = uuid() "id";
+  } "build";
+}
+
+group Patient(source pid, target entry) {
+  pid -> entry.resource = create('Patient') as p then {
+    pid -> p.id = uuid() "id";
+  } "build";
+}
+
+group Observation(source obx, target entry) {
+  obx -> entry.resource = create('Observation') as ob then {
+    obx -> ob.id = uuid() "id";
+    obx -> ob.status = 'final' "status";
+  } "build";
+}
