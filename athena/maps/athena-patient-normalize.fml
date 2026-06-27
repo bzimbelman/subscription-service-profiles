@@ -1,0 +1,19 @@
+map "http://bzonfhir.com/fhir/StructureMap/athena-patient-normalize" = "athena-patient-normalize"
+
+uses "http://bzonfhir.com/fhir/StructureDefinition/AthenaChangedPatient" alias AthenaChangedPatient as source
+uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias Bundle as target
+
+group AthenaChangedPatientToFHIR(source src : AthenaChangedPatient, target bundle : Bundle) {
+  src -> bundle.type = 'collection' "set-bundle-type";
+  src -> bundle.entry as entry then Patient(src, entry) "patient";
+}
+
+group Patient(source src, target entry) {
+  src -> entry.resource = create('Patient') as p then {
+    src -> p.id = uuid() "id";
+    src.patientid as v -> p.identifier as id then {
+      v -> id.value = v "value";
+      v -> id.system = 'urn:bzonfhir:profile:athena:patientid' "system";
+    } "identifier";
+  } "build";
+}
