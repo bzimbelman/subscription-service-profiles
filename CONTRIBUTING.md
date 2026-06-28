@@ -86,7 +86,11 @@ Commit message format: `<vendor>: <short subject>` (lower-case subject, imperati
 
 ## Code of conduct
 
-By participating in this project you agree to follow the [Contributor Covenant v2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/). The official file (`CODE_OF_CONDUCT.md`) lands in this repo via follow-up ticket #476; in the meantime the linked text is binding.
+By participating in this project you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md) (Contributor Covenant v2.1). The maintainer enforces it.
+
+## Governance
+
+See [GOVERNANCE.md](GOVERNANCE.md) for the maintainership model and how decisions get made. Today the project has a single maintainer; a steering committee is planned once sustained external contribution arrives.
 
 ## Reporting security issues
 
